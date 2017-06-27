@@ -14,6 +14,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
+using Gif.Components;
+using LibUtility;
 
 namespace ImageFrame
 {
@@ -225,8 +227,11 @@ namespace ImageFrame
             //de la primera imagen de la lista.
             AddImage(LibUtility.Utility.ImageToBytes(RedimImage(imagen)));
         }
-
-        public void AddImage(byte[] imageBytes)
+        /// <summary>
+        /// en ambito cerrado x falta de redimensionado de las imagenes
+        /// </summary>
+        /// <param name="imageBytes"></param>
+        private void AddImage(byte[] imageBytes)
         {
             frames.Add(imageBytes);
             Count++;
@@ -248,9 +253,23 @@ namespace ImageFrame
         }
         #endregion
         #region AddAnotherImageGif
-        public void AddImageGif(ImageGif imagegif)
+        public void SaveImageGif(string pathfile)
         {
-
+            Image[] img = new Image[frames.Count];
+            for (int i = 0; i < frames.Count; i++)
+            {
+                img[i] = Utility.BytesToImage(frames[i]);           
+            }
+            AnimatedGifEncoder egif = new AnimatedGifEncoder();
+            egif.Start(pathfile);
+            egif.SetDelay(500);
+            egif.SetRepeat(0);
+            for (int i = 0; i < img.Length; i++)
+            {
+                egif.AddFrame(img[i]);
+            }
+            egif.Finish();
+            Debug.WriteLine("Finalizada la construccion del Gif: " + pathfile);
         }
         #endregion
 

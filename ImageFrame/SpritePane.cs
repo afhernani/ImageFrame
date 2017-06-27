@@ -173,6 +173,13 @@ namespace ImageFrame
 			if (t != null)
 				t.Abort();
 		}
+        public void SaveGif(string pathfile)
+        {
+            if (_imagegif!=null && Path.GetExtension(pathfile).ToUpper().Equals(".GIF"))
+            {
+                _imagegif.SaveImageGif(pathfile);
+            }
+        }
 		
 	}
 }
