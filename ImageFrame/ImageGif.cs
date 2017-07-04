@@ -262,7 +262,7 @@ namespace ImageFrame
             }
             AnimatedGifEncoder egif = new AnimatedGifEncoder();
             egif.Start(pathfile);
-            egif.SetDelay(500);
+            egif.SetDelay(800);
             egif.SetRepeat(0);
             for (int i = 0; i < img.Length; i++)
             {
