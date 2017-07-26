@@ -67,7 +67,7 @@ namespace ImageFrame
                         {
                             spritePane1.SetImageGif = new ImageGif();
                             spritePane1.SetImageGif.AddImage((Image)Image.FromFile(item).Clone());
-                            spritePane1.InitialImage(0);
+                            //spritePane1.InitialImage(0);
                         }
                         else
                         {

@@ -41,6 +41,7 @@ namespace ImageFrame
 			
 			Time = 800;
 			Accion = false;
+			CurrentFrame = -1;
 			//this.Invalidate(this.ClientRectangle);
 		}
 		
@@ -63,7 +64,7 @@ namespace ImageFrame
 			
 			Time = 800;
 			Accion = false;
-			//InitialImage(0);
+			CurrentFrame = -1;
 			this.Invalidate(this.ClientRectangle);
 		}
 		
@@ -72,6 +73,7 @@ namespace ImageFrame
 		private Thread t;
 		[NonSerialized]
 		private ImageGif _imagegif = null;
+		private int CurrentFrame{ get; set; }
 		
 		
 		public Image GetImage {
@@ -131,30 +133,6 @@ namespace ImageFrame
 		//[XmlSerializable]
 		private bool Accion{ get; set; }
 		
-		public void InitialImage(int index)
-		{
-			Image newImage = new Bitmap(this.Width, this.Height, PixelFormat.Format64bppPArgb);
-                
-			using (Graphics g = this.CreateGraphics()) {
-				g.Clear(this.BackColor); //aqui no.
-				g.SmoothingMode = SmoothingMode.AntiAlias;
-				g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-				g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-				switch (SizeMode) {
-					case PictureBoxSizeMode.Normal:
-						g.DrawImage(_imagegif.GetFrame(index), 0, 0, 
-							new RectangleF(0, 0, this.Width, this.Height), 
-							GraphicsUnit.Pixel);
-						break;
-					case PictureBoxSizeMode.Zoom:
-						g.DrawImage(LibUtility.Utility.ResizeImage(_imagegif.GetFrame(index), this.Width, this.Height, true), 0, 0, 
-							new RectangleF(0, 0, this.Width, this.Height), 
-							GraphicsUnit.Pixel);				
-						break;	
-				}
-			}
-			Debug.WriteLine("dibujando imagen de inicio ...{" + _imagegif.CurrentFrame + "}");
-		}
 		//[XmlSerializable]
 		public int Time { get; set; }
 		
@@ -192,26 +170,56 @@ namespace ImageFrame
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			Debug.WriteLine("OnPaint");
-			if (_imagegif != null) {
-				Image newImage = new Bitmap(this.Width, this.Height, PixelFormat.Format64bppPArgb);
-                
-				{
-					switch (SizeMode) {
-						case PictureBoxSizeMode.Normal:
-							e.Graphics.DrawImage(_imagegif.GetNextFrame(), 0, 0,
-								new RectangleF(0, 0, this.Width, this.Height), 
-								GraphicsUnit.Pixel);
-							break;
-						case PictureBoxSizeMode.Zoom:
-							e.Graphics.DrawImage(LibUtility.Utility.ResizeImage(_imagegif.GetNextFrame(), this.Width, this.Height, true), 0, 0, 
-								new RectangleF(0, 0, this.Width, this.Height), 
-								GraphicsUnit.Pixel);				
-							break;	
-					}
-				}
-			}
+			if (_imagegif != null && Accion==true)
+				DrawNextFrame(e);
+			if (_imagegif != null && Accion == false)
+				DrawCurrentFrame(e);
 			base.OnPaint(e);		
 		}
-		
+		/// <summary>
+		/// complementa OnPaint(PaintEventArgs e)
+		/// </summary>
+		/// <param name="e"></param>
+		private void DrawNextFrame(PaintEventArgs e)
+		{
+			Image newImage = new Bitmap(this.Width, this.Height, PixelFormat.Format64bppPArgb);
+                
+			{
+				switch (SizeMode) {
+					case PictureBoxSizeMode.Normal:
+						e.Graphics.DrawImage(_imagegif.GetNextFrame(), 0, 0,
+							new RectangleF(0, 0, this.Width, this.Height), 
+							GraphicsUnit.Pixel);
+						break;
+					case PictureBoxSizeMode.Zoom:
+						e.Graphics.DrawImage(LibUtility.Utility.ResizeImage(_imagegif.GetNextFrame(), this.Width, this.Height, true), 0, 0, 
+							new RectangleF(0, 0, this.Width, this.Height), 
+							GraphicsUnit.Pixel);				
+						break;	
+				}
+				CurrentFrame = _imagegif.CurrentFrame;
+			}
+		}
+		private void DrawCurrentFrame(PaintEventArgs e)
+		{
+			if (CurrentFrame == -1)
+				CurrentFrame = 0;
+			Image newImage = new Bitmap(this.Width, this.Height, PixelFormat.Format64bppPArgb);
+                
+			{
+				switch (SizeMode) {
+					case PictureBoxSizeMode.Normal:
+						e.Graphics.DrawImage(_imagegif.GetFrame(CurrentFrame), 0, 0,
+							new RectangleF(0, 0, this.Width, this.Height), 
+							GraphicsUnit.Pixel);
+						break;
+					case PictureBoxSizeMode.Zoom:
+						e.Graphics.DrawImage(LibUtility.Utility.ResizeImage(_imagegif.GetFrame(CurrentFrame), this.Width, this.Height, true), 0, 0, 
+							new RectangleF(0, 0, this.Width, this.Height), 
+							GraphicsUnit.Pixel);				
+						break;	
+				}
+			}
+		}
 	}
 }
