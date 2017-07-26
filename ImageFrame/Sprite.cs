@@ -26,9 +26,10 @@ namespace ImageFrame
             //
             InitializeComponent();
 
-            //
-            // TODO: Add constructor code after the InitializeComponent() call.
-            //
+			//
+			// TODO: Add constructor code after the InitializeComponent() call.
+			//
+			this.ResizeRedraw = true;
         }
 
         string filename = string.Empty;

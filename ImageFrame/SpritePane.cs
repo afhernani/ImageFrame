@@ -36,7 +36,9 @@ namespace ImageFrame
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
-			_index = 0;
+			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw |
+			ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
+			
 			Time = 800;
 			Accion = false;
 		}
@@ -51,29 +53,31 @@ namespace ImageFrame
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
-			if(Path.GetExtension(path).ToUpper()==".gif".ToUpper()){
+			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw |
+			ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
+			if (Path.GetExtension(path).ToUpper() == ".gif".ToUpper()) {
 				_imagegif = new ImageGif(path);
 			}
-			_index = 0;
+			
 			Time = 800;
 			Accion = false;
-			InitialImage(0);
+			//InitialImage(0);
+			this.Invalidate();
 		}
 		
 		public PictureBoxSizeMode SizeMode{ get; set; }
 		[NonSerialized]
 		private Thread t;
-        [NonSerialized]
-        private ImageGif _imagegif = null;
-		private int _index = 0;
+		[NonSerialized]
+		private ImageGif _imagegif = null;
+		private int _index = -1;
 		
 		public Image GetImage {
-			get{ 
-				if(_imagegif != null){
+			get { 
+				if (_imagegif != null) {
 					
 					return (Image)_imagegif.GetFrame(_index).Clone();
-				} else
-				{
+				} else {
 					return new Bitmap(this.Width, this.Height);
 				}
 			}
@@ -84,9 +88,9 @@ namespace ImageFrame
 				_imagegif = value;
 				//InitialImage(0);
 			}
-            get {
-                return _imagegif;
-            }
+			get {
+				return _imagegif;
+			}
 		}
 		
 		private void ActionImagen()
@@ -107,7 +111,7 @@ namespace ImageFrame
 								GraphicsUnit.Pixel);
 							break;
 						case PictureBoxSizeMode.Zoom:
-							g.DrawImage(LibUtility.Utility.ResizeImage(_imagegif.GetNextFrame(),this.Width,this.Height,true), 0, 0, 
+							g.DrawImage(LibUtility.Utility.ResizeImage(_imagegif.GetNextFrame(), this.Width, this.Height, true), 0, 0, 
 								new RectangleF(0, 0, this.Width, this.Height), 
 								GraphicsUnit.Pixel);				
 							break;	
@@ -173,13 +177,43 @@ namespace ImageFrame
 			if (t != null)
 				t.Abort();
 		}
-        public void SaveGif(string pathfile)
-        {
-            if (_imagegif!=null && Path.GetExtension(pathfile).ToUpper().Equals(".GIF"))
-            {
-                _imagegif.SaveImageGif(pathfile);
-            }
-        }
+		public void SaveGif(string pathfile)
+		{
+			if (_imagegif != null && Path.GetExtension(pathfile).ToUpper().Equals(".GIF")) {
+				_imagegif.SaveImageGif(pathfile);
+			}
+		}
+		protected override void OnResize(EventArgs e){
+			this.Invalidate();
+			base.OnResize(e);
+			//this.Refresh();
+		}
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			if (_imagegif != null) {
+				Image newImage = new Bitmap(this.Width, this.Height, PixelFormat.Format64bppPArgb);
+                
+				using (Graphics g = e.Graphics) {
+					//g.Clear(this.BackColor); //produce pantallazo.
+					g.SmoothingMode = SmoothingMode.AntiAlias;
+					g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+					switch (SizeMode) {
+						case PictureBoxSizeMode.Normal:
+							g.DrawImage(_imagegif.GetNextFrame(), 0, 0,
+								new RectangleF(0, 0, this.Width, this.Height), 
+								GraphicsUnit.Pixel);
+							break;
+						case PictureBoxSizeMode.Zoom:
+							g.DrawImage(LibUtility.Utility.ResizeImage(_imagegif.GetNextFrame(), this.Width, this.Height, true), 0, 0, 
+								new RectangleF(0, 0, this.Width, this.Height), 
+								GraphicsUnit.Pixel);				
+							break;	
+					}
+				}
+			}
+			base.OnPaint(e);
+		}
 		
 	}
 }
