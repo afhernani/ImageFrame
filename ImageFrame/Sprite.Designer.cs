@@ -37,35 +37,35 @@ namespace ImageFrame
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.spritePane1 = new ImageFrame.SpritePane();
-            this.SuspendLayout();
-            // 
-            // spritePane1
-            // 
-            this.spritePane1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.spritePane1.BackColor = System.Drawing.Color.DarkSalmon;
-            this.spritePane1.Location = new System.Drawing.Point(9, 12);
-            this.spritePane1.Name = "spritePane1";
-            this.spritePane1.SetImageGif = null;
-            this.spritePane1.Size = new System.Drawing.Size(252, 150);
-            this.spritePane1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.spritePane1.TabIndex = 0;
-            this.spritePane1.Time = 800;
-            this.spritePane1.Click += new System.EventHandler(this.SpritePane1Click);
-            this.spritePane1.MouseHover += new System.EventHandler(this.SpritePane1MouseHover);
-            // 
-            // Sprite
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(273, 174);
-            this.Controls.Add(this.spritePane1);
-            this.DoubleBuffered = true;
-            this.Name = "Sprite";
-            this.Text = "Sprite";
-            this.ResumeLayout(false);
+			this.spritePane1 = new ImageFrame.SpritePane();
+			this.SuspendLayout();
+			// 
+			// spritePane1
+			// 
+			this.spritePane1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			| System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
+			this.spritePane1.BackColor = System.Drawing.Color.Yellow;
+			this.spritePane1.Location = new System.Drawing.Point(9, 12);
+			this.spritePane1.Name = "spritePane1";
+			this.spritePane1.SetImageGif = null;
+			this.spritePane1.Size = new System.Drawing.Size(252, 150);
+			this.spritePane1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.spritePane1.TabIndex = 0;
+			this.spritePane1.Time = 800;
+			this.spritePane1.Click += new System.EventHandler(this.SpritePane1Click);
+			this.spritePane1.MouseHover += new System.EventHandler(this.SpritePane1MouseHover);
+			// 
+			// Sprite
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.ClientSize = new System.Drawing.Size(273, 174);
+			this.Controls.Add(this.spritePane1);
+			this.DoubleBuffered = true;
+			this.Name = "Sprite";
+			this.Text = "Sprite";
+			this.ResumeLayout(false);
 
 		}
 	}

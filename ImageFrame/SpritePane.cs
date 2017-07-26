@@ -41,6 +41,7 @@ namespace ImageFrame
 			
 			Time = 800;
 			Accion = false;
+			//this.Invalidate(this.ClientRectangle);
 		}
 		
 		public SpritePane(string path)
@@ -55,6 +56,7 @@ namespace ImageFrame
 			//
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw |
 			ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
+			
 			if (Path.GetExtension(path).ToUpper() == ".gif".ToUpper()) {
 				_imagegif = new ImageGif(path);
 			}
@@ -62,7 +64,7 @@ namespace ImageFrame
 			Time = 800;
 			Accion = false;
 			//InitialImage(0);
-			this.Invalidate();
+			this.Invalidate(this.ClientRectangle);
 		}
 		
 		public PictureBoxSizeMode SizeMode{ get; set; }
@@ -70,13 +72,13 @@ namespace ImageFrame
 		private Thread t;
 		[NonSerialized]
 		private ImageGif _imagegif = null;
-		private int _index = -1;
+		
 		
 		public Image GetImage {
 			get { 
 				if (_imagegif != null) {
 					
-					return (Image)_imagegif.GetFrame(_index).Clone();
+					return (Image)_imagegif.GetFrame(_imagegif.CurrentFrame).Clone();
 				} else {
 					return new Bitmap(this.Width, this.Height);
 				}
@@ -86,7 +88,7 @@ namespace ImageFrame
 		public ImageGif SetImageGif { 
 			set { 
 				_imagegif = value;
-				//InitialImage(0);
+				Invalidate(this.ClientRectangle);
 			}
 			get {
 				return _imagegif;
@@ -95,8 +97,7 @@ namespace ImageFrame
 		
 		private void ActionImagen()
 		{
-			do {
-				
+			do {/*
 				Image newImage = new Bitmap(this.Width, this.Height, PixelFormat.Format64bppPArgb);
                 
 				using (Graphics g = this.CreateGraphics()) {
@@ -116,6 +117,10 @@ namespace ImageFrame
 								GraphicsUnit.Pixel);				
 							break;	
 					}
+				}*/
+				using (PaintEventArgs e = new PaintEventArgs(this.CreateGraphics(), ClientRectangle)) {
+					OnPaint(e);
+					//OnPaint(e);
 				}
 				Debug.WriteLine("dibujando image ...{" + _imagegif.CurrentFrame + "}");
 				Thread.Sleep(Time);
@@ -183,36 +188,29 @@ namespace ImageFrame
 				_imagegif.SaveImageGif(pathfile);
 			}
 		}
-		protected override void OnResize(EventArgs e){
-			this.Invalidate();
-			base.OnResize(e);
-			//this.Refresh();
-		}
+		
 		protected override void OnPaint(PaintEventArgs e)
 		{
+			Debug.WriteLine("OnPaint");
 			if (_imagegif != null) {
 				Image newImage = new Bitmap(this.Width, this.Height, PixelFormat.Format64bppPArgb);
                 
-				using (Graphics g = e.Graphics) {
-					//g.Clear(this.BackColor); //produce pantallazo.
-					g.SmoothingMode = SmoothingMode.AntiAlias;
-					g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+				{
 					switch (SizeMode) {
 						case PictureBoxSizeMode.Normal:
-							g.DrawImage(_imagegif.GetNextFrame(), 0, 0,
+							e.Graphics.DrawImage(_imagegif.GetNextFrame(), 0, 0,
 								new RectangleF(0, 0, this.Width, this.Height), 
 								GraphicsUnit.Pixel);
 							break;
 						case PictureBoxSizeMode.Zoom:
-							g.DrawImage(LibUtility.Utility.ResizeImage(_imagegif.GetNextFrame(), this.Width, this.Height, true), 0, 0, 
+							e.Graphics.DrawImage(LibUtility.Utility.ResizeImage(_imagegif.GetNextFrame(), this.Width, this.Height, true), 0, 0, 
 								new RectangleF(0, 0, this.Width, this.Height), 
 								GraphicsUnit.Pixel);				
 							break;	
 					}
 				}
 			}
-			base.OnPaint(e);
+			base.OnPaint(e);		
 		}
 		
 	}
