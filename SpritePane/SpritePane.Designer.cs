@@ -2,22 +2,21 @@
  * Creado por SharpDevelop.
  * Usuario: hernani
  * Fecha: 22/06/2017
- * Hora: 16:15
+ * Hora: 14:20
  * 
  * Para cambiar esta plantilla use Herramientas | Opciones | Codificación | Editar Encabezados Estándar
  */
-namespace ImageFrame
+namespace LibPanes
 {
-	partial class Sprite
+	partial class SpritePane
 	{
 		/// <summary>
 		/// Designer variable used to keep track of non-visual components.
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
-		private LibPanes.SpritePane spritePane1;
 		
 		/// <summary>
-		/// Disposes resources used by the form.
+		/// Disposes resources used by the control.
 		/// </summary>
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
@@ -37,34 +36,18 @@ namespace ImageFrame
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.spritePane1 = new LibPanes.SpritePane();
 			this.SuspendLayout();
 			// 
-			// spritePane1
-			// 
-			this.spritePane1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.spritePane1.BackColor = System.Drawing.Color.Yellow;
-			this.spritePane1.Location = new System.Drawing.Point(9, 12);
-			this.spritePane1.Name = "spritePane1";
-			this.spritePane1.SetImageGif = null;
-			this.spritePane1.Size = new System.Drawing.Size(252, 150);
-			this.spritePane1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.spritePane1.TabIndex = 0;
-			this.spritePane1.Time = 800;
-			this.spritePane1.Click += new System.EventHandler(this.SpritePane1Click);
-			this.spritePane1.MouseHover += new System.EventHandler(this.SpritePane1MouseHover);
-			// 
-			// Sprite
+			// SpritePane
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(273, 174);
-			this.Controls.Add(this.spritePane1);
 			this.DoubleBuffered = true;
-			this.Name = "Sprite";
-			this.Text = "Sprite";
+			this.Name = "SpritePane";
+			this.Size = new System.Drawing.Size(238, 140);
+			this.MouseEnter += new System.EventHandler(this.SpritePaneMouseEnter);
+			this.MouseLeave += new System.EventHandler(this.SpritePaneMouseLeave);
+			this.MouseHover += new System.EventHandler(this.SpritePaneMouseHover);
 			this.ResumeLayout(false);
 
 		}

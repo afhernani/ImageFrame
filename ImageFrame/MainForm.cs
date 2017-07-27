@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
+using LibPanes;
 
 namespace ImageFrame
 {

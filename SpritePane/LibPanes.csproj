@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
-    <ProjectGuid>{839E8026-01FA-425D-8812-B9C5355840EA}</ProjectGuid>
+    <ProjectGuid>{B323627E-42A1-4BA6-9A20-78A427FDC725}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>ImageFrame</RootNamespace>
-    <AssemblyName>ImageFrame</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>LibPanes</RootNamespace>
+    <AssemblyName>LibPanes</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
+    <NoWin32Manifest>False</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <Prefer32Bit>True</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -51,37 +51,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sprite.cs">
-      <SubType>Form</SubType>
+    <Compile Include="SpritePane.cs" />
+    <Compile Include="SpritePane.Designer.cs">
+      <DependentUpon>SpritePane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Sprite.Designer.cs">
-      <DependentUpon>Sprite.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Util\AnimatedGifEncoder.cs" />
+    <Compile Include="Util\GifDecoder.cs" />
+    <Compile Include="Util\ImageGif.cs" />
+    <Compile Include="Util\LZWEncoder.cs" />
+    <Compile Include="Util\NeuQuant.cs" />
+    <Compile Include="Util\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <Folder Include="Util" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="SpritePane.resx">
+      <DependentUpon>SpritePane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Sprite.resx">
-      <DependentUpon>Sprite.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SpritePane\LibPanes.csproj">
-      <Project>{b323627e-42a1-4ba6-9a20-78a427fdc725}</Project>
-      <Name>LibPanes</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
