@@ -36,20 +36,22 @@ namespace LibPanes
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.SuspendLayout();
+			
+			//this.SuspendLayout();
 			// 
 			// SpritePane
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			
+			this.SuspendLayout();
+			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.DoubleBuffered = true;
 			this.Name = "SpritePane";
-			this.Size = new System.Drawing.Size(238, 140);
+			this.Size = new System.Drawing.Size(100, 60);
 			this.MouseEnter += new System.EventHandler(this.SpritePaneMouseEnter);
 			this.MouseLeave += new System.EventHandler(this.SpritePaneMouseLeave);
 			this.MouseHover += new System.EventHandler(this.SpritePaneMouseHover);
 			this.ResumeLayout(false);
-
 		}
 	}
 }

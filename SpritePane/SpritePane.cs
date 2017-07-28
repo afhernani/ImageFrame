@@ -15,14 +15,14 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Threading;
 using System.Windows.Forms;
-using System.Xml.Serialization;
+//using System.Xml.Serialization;
 
 namespace LibPanes
 {
 	/// <summary>
 	/// Description of SpritePane.
 	/// </summary>
-	[Serializable, XmlRoot("SpritePane", Namespace = "", IsNullable = false)]
+	//[Serializable, XmlRoot("SpritePane", Namespace = "", IsNullable = false)]
 	public partial class SpritePane : UserControl
 	{
 		
@@ -36,46 +36,35 @@ namespace LibPanes
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
-			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw |
-			ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
 			
+			this.SetStyle(System.Windows.Forms.ControlStyles.AllPaintingInWmPaint |
+			              System.Windows.Forms.ControlStyles.ResizeRedraw | 
+			              System.Windows.Forms.ControlStyles.OptimizedDoubleBuffer | 
+			              System.Windows.Forms.ControlStyles.UserPaint, true);
 			Time = 800;
 			Accion = false;
 			CurrentFrame = -1;
-			//this.Invalidate(this.ClientRectangle);
+			SizeMode = PictureBoxSizeMode.Zoom;
+            this.Invalidate(this.ClientRectangle);
 		}
+		private PictureBoxSizeMode _sizemode;
+        [Category("Action")]
+        [Description("Mode of visualizate the imagen into sprite-pane.")]
+        public PictureBoxSizeMode SizeMode { get { return _sizemode; }
+            set { _sizemode = value;
+                this.Invalidate(this.ClientRectangle);
+            }
+        }
 		
-		public SpritePane(string path)
-		{
-			//
-			// The InitializeComponent() call is required for Windows Forms designer support.
-			//
-			InitializeComponent();
-			
-			//
-			// TODO: Add constructor code after the InitializeComponent() call.
-			//
-			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw |
-			ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
-			
-			if (Path.GetExtension(path).ToUpper() == ".gif".ToUpper()) {
-				_imagegif = new ImageGif(path);
-			}
-			
-			Time = 800;
-			Accion = false;
-			CurrentFrame = -1;
-			this.Invalidate(this.ClientRectangle);
-		}
-		
-		public PictureBoxSizeMode SizeMode{ get; set; }
-		[NonSerialized]
 		private Thread t;
-		[NonSerialized]
+		
 		private ImageGif _imagegif = null;
+		[Category("Action")]
+        [Description("int represent to active imagen in sprite-pane.")]
 		private int CurrentFrame{ get; set; }
 		
-		
+		[Category("Action")]
+        [Description("return active imagen in sprite-pane.")]
 		public Image GetImage {
 			get { 
 				if (_imagegif != null) {
@@ -86,7 +75,25 @@ namespace LibPanes
 				}
 			}
 		}
-		
+        string _filepath = String.Empty;
+        [Category("Action")]
+        [Description("load file to pas the string path file.")]
+        public String FilePath { get { return _filepath; } set { _filepath = value;
+                this.File(value);
+            } }
+		/// <summary>
+        /// from file
+        /// </summary>
+        /// <param name="path"></param>
+        public void File(string path)
+        {
+            if (Path.GetExtension(path).ToUpper() == ".gif".ToUpper())
+            {
+                this.SetImageGif = new ImageGif(path);
+            }
+        }
+        [Category("Action")]
+        [Description("set objet imagegif to spritepane component.")]
 		public ImageGif SetImageGif { 
 			set { 
 				_imagegif = value;
@@ -100,27 +107,7 @@ namespace LibPanes
 		
 		private void ActionImagen()
 		{
-			do {/*
-				Image newImage = new Bitmap(this.Width, this.Height, PixelFormat.Format64bppPArgb);
-                
-				using (Graphics g = this.CreateGraphics()) {
-					g.Clear(this.BackColor); //produce pantallazo.
-					g.SmoothingMode = SmoothingMode.AntiAlias;
-					g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-					g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-					switch (SizeMode) {
-						case PictureBoxSizeMode.Normal:
-							g.DrawImage(_imagegif.GetNextFrame(), 0, 0,
-								new RectangleF(0, 0, this.Width, this.Height), 
-								GraphicsUnit.Pixel);
-							break;
-						case PictureBoxSizeMode.Zoom:
-							g.DrawImage(LibUtility.Utility.ResizeImage(_imagegif.GetNextFrame(), this.Width, this.Height, true), 0, 0, 
-								new RectangleF(0, 0, this.Width, this.Height), 
-								GraphicsUnit.Pixel);				
-							break;	
-					}
-				}*/
+			do {
 				using (PaintEventArgs e = new PaintEventArgs(this.CreateGraphics(), ClientRectangle)) {
 					OnPaint(e);
 					//OnPaint(e);
@@ -131,10 +118,10 @@ namespace LibPanes
                 
 			} while (Accion);
 		}
-		//[XmlSerializable]
 		private bool Accion{ get; set; }
 		
-		//[XmlSerializable]
+		[Category("Action")]
+		[Description("time in milisecons to renove imge in component.")]
 		public int Time { get; set; }
 		
 		void SpritePaneMouseHover(object sender, EventArgs e)
