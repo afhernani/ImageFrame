@@ -15,6 +15,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Threading;
 using System.Windows.Forms;
+using System.Runtime.Versioning;
 //using System.Xml.Serialization;
 
 namespace LibPanes
@@ -41,7 +42,7 @@ namespace LibPanes
 			              System.Windows.Forms.ControlStyles.ResizeRedraw | 
 			              System.Windows.Forms.ControlStyles.OptimizedDoubleBuffer | 
 			              System.Windows.Forms.ControlStyles.UserPaint, true);
-			Time = 800;
+			Time = 1000;
 			Accion = false;
 			CurrentFrame = -1;
 			SizeMode = PictureBoxSizeMode.Zoom;
@@ -60,8 +61,17 @@ namespace LibPanes
 		
 		private ImageGif _imagegif = null;
 		[Category("Action")]
-        [Description("int represent to active imagen in sprite-pane.")]
-		private int CurrentFrame{ get; set; }
+		[Description("int represent to active imagen in sprite-pane.")]
+		public int CurrentFrame{ get; set; }
+		
+		public int Count {
+			get {
+				if (_imagegif != null)
+					return _imagegif.GetCount();
+				else
+					return 0;
+			}
+		}
 		
 		[Category("Action")]
         [Description("return active imagen in sprite-pane.")]
@@ -75,21 +85,36 @@ namespace LibPanes
 				}
 			}
 		}
-        string _filepath = String.Empty;
+        //string _filepath = String.Empty;
         [Category("Action")]
         [Description("load file to pas the string path file.")]
-        public String FilePath { get { return _filepath; } set { _filepath = value;
-                this.File(value);
-            } }
+        public String FilePath { 
+        	get 
+        	{
+				if (_imagegif != null)
+					return _imagegif.Namefilegif;
+				else
+					return String.Empty;
+        	} 
+        	set 
+        	{ 
+        		if(System.IO.File.Exists(value))
+        			this.FileOpen(value);
+            } 
+        }
 		/// <summary>
         /// from file
         /// </summary>
         /// <param name="path"></param>
-        public void File(string path)
+        public void FileOpen(string path)
         {
             if (Path.GetExtension(path).ToUpper() == ".gif".ToUpper())
             {
                 this.SetImageGif = new ImageGif(path);
+            }
+            if (Path.GetExtension(path).ToUpper() == ".jpg".ToUpper()) {
+				this.SetImageGif = new ImageGif();
+				this.SetImageGif.AddImage((Image)Image.FromFile(path).Clone());
             }
         }
         [Category("Action")]
@@ -113,12 +138,11 @@ namespace LibPanes
 					//OnPaint(e);
 				}
 				Debug.WriteLine("dibujando image ...{" + _imagegif.CurrentFrame + "}");
-				Thread.Sleep(Time);
-				
-                
+				Thread.Sleep(Time);            
 			} while (Accion);
 		}
 		private bool Accion{ get; set; }
+		
 		
 		[Category("Action")]
 		[Description("time in milisecons to renove imge in component.")]
@@ -151,6 +175,7 @@ namespace LibPanes
 		public void SaveGif(string pathfile)
 		{
 			if (_imagegif != null && Path.GetExtension(pathfile).ToUpper().Equals(".GIF")) {
+				_imagegif.Time = Time;
 				_imagegif.SaveImageGif(pathfile);
 			}
 		}

@@ -42,8 +42,8 @@ namespace ImageFrame
             {
                 Filter = "Gif file(*.gif*)|*.gif|All files(*.*)|*.*",
                 Title = @"Open gif to load",
-                InitialDirectory = Environment.CurrentDirectory,
-                RestoreDirectory = true,
+                //InitialDirectory = Environment.CurrentDirectory,
+                //RestoreDirectory = true,
                 Multiselect = true
             };
 
@@ -66,8 +66,9 @@ namespace ImageFrame
                     {
                         if (spritePane1.SetImageGif == null)
                         {
-                            spritePane1.SetImageGif = new ImageGif();
-                            spritePane1.SetImageGif.AddImage((Image)Image.FromFile(item).Clone());
+							spritePane1.FilePath = item;
+                            //spritePane1.SetImageGif = new ImageGif();
+                            //spritePane1.SetImageGif.AddImage((Image)Image.FromFile(item).Clone());
                             //spritePane1.InitialImage(0);
                         }
                         else
