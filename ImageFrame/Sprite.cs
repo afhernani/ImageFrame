@@ -89,8 +89,26 @@ namespace ImageFrame
         {
             if (keyData == (Keys.Control | Keys.G))
             {
-                Debug.WriteLine("<CTRL> + Alt + S Captured");
+                this.Text =("<CTRL> + G Save Gif");
                 SaveFileToDisk();
+            }
+            if (keyData == (Keys.Control | Keys.S))
+            {
+                this.Text=("<CTRL> + S save all imagens to disk");
+                SaveAllImagensToDisk();
+            }
+            if (keyData == (Keys.Control | Keys.C))
+            {
+                this.Text=("<CTRL> + C save current image to disk");
+                SaveCurrentImageToDisk();
+            }
+            if (keyData == (Keys.Control | Keys.H))
+            {
+                this.Text=("<CTRL> + H help comands");
+				MessageBox.Show(" shotkut:\n" +
+				"<CTRL> + G Save Gif\n" +
+				"<CTRL> + S save all imagens to disk\n" +
+				"<CTRL> + C save current image to disk");
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -101,13 +119,30 @@ namespace ImageFrame
             {
                 Filter = "Gif file(*.gif*)|*.gif",
                 Title = @"Save gif to disk",
-                InitialDirectory = Environment.CurrentDirectory,
-                RestoreDirectory = true,
+                //InitialDirectory = Environment.CurrentDirectory,
+                //RestoreDirectory = true,
             };
             if (savefile.ShowDialog() == DialogResult.OK)
             {
                 spritePane1.SaveGif(savefile.FileName);
             }
+        }
+        private void SaveAllImagensToDisk(){
+        	SaveFileDialog savefile = new SaveFileDialog()
+            {
+                Filter = "Gif file(*.gif*)|*.gif",
+                Title = @"Save gif to disk",
+                //InitialDirectory = Environment.CurrentDirectory,
+                //RestoreDirectory = true,
+            };
+            if (savefile.ShowDialog() == DialogResult.OK)
+            {
+                spritePane1.SaveAllImagens(savefile.FileName);
+            }
+        }
+        private void SaveCurrentImageToDisk()
+        {
+			spritePane1.SaveCurrentImage();
         }
 		
     }

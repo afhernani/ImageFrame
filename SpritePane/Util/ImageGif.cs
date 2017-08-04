@@ -34,9 +34,16 @@ namespace LibPanes
 		private int Step { get; set; }
 
 		public int Time { get; set; }
-
+		/// <summary>
+		/// variable almacena ruta y nombre del fichero
+		/// </summary>
 		private string _namefile;
-
+		/// <summary>
+		/// load file to pas the string path file. route and name with extension
+		/// and return same one.
+		/// </summary>
+		//[Category("Action")]
+        //[Description("load file to pas the string path file. route and name with extension")]
 		public string Namefilegif {
 			get { return _namefile; }
 			set
@@ -328,6 +335,8 @@ namespace LibPanes
             string nameb = Path.GetFileNameWithoutExtension(path);
 			if (String.IsNullOrEmpty(nameb)) return; //salimos x que no tenemos un nombre.
             string ext = Path.GetExtension(path);
+            //todo: comprobar el tipo de extension si da el caso
+            //
 			//llegados aqui guardamos si existe algo.
             int n = 000;
 			foreach (var item in frames)

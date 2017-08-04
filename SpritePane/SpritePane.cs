@@ -87,7 +87,7 @@ namespace LibPanes
 		}
         //string _filepath = String.Empty;
         [Category("Action")]
-        [Description("load file to pas the string path file.")]
+        [Description("load file to pas the string path file. route and name with extension")]
         public String FilePath { 
         	get 
         	{
@@ -234,5 +234,24 @@ namespace LibPanes
 				}
 			}
 		}
+		/// <summary>
+        /// save all imagens contens in SpritePane
+        /// </summary>
+        /// <param name="path"></param>
+        public void SaveAllImagens(string path)
+        {
+            if(_imagegif!=null)
+                _imagegif.SaveAllImagenToFile(path);
+        }
+        public void SaveCurrentImage(){
+        	if(!String.IsNullOrEmpty(FilePath))
+        	{
+        		string rutayNombre = Path.Combine(Path.GetDirectoryName(FilePath), Path.GetFileNameWithoutExtension(FilePath));
+        		string ext =".jpg";
+        		int _n = _imagegif.CurrentFrame;
+        		rutayNombre += _n + ext;
+        		_imagegif.SaveCurrentImagen(rutayNombre);
+        	}
+        }
 	}
 }
